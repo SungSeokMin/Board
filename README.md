@@ -12,13 +12,13 @@
 
 ### user
 
-| endPoint      | method | 설명                                    |     |     |
-| ------------- | ------ | --------------------------------------- | --- | --- |
-| /user/signin  | POST   | 이메일, 비밀번호 받아서 로그인(session) |     |     |
-| /user/signup  | POST   | 정보를 받아서 회원가입                  |     |     |
-| /user/signout | POST   | 로그아웃                                |     |     |
-| /user/info    | GET    | 나의 정보와 내가 쓴 게시글 조회         |     |     |
-| /user/destroy | DELETE | 회원탈퇴                                |     |     |
+| endPoint      | method | 설명                                    |
+| ------------- | ------ | --------------------------------------- |
+| /user/signin  | POST   | 이메일, 비밀번호 받아서 로그인(session) |
+| /user/signup  | POST   | 정보를 받아서 회원가입                  |
+| /user/signout | POST   | 로그아웃                                |
+| /user/info    | GET    | 나의 정보와 내가 쓴 게시글 조회         |
+| /user/destroy | DELETE | 회원탈퇴                                |
 
 ---
 
