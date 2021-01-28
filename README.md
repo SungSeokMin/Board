@@ -18,7 +18,7 @@
 | /user/signup  | POST   | 정보를 받아서 회원가입                  |
 | /user/signout | POST   | 로그아웃                                |
 | /user/info    | GET    | 나의 정보와 내가 쓴 게시글 조회         |
-| /user/destroy | DELETE | 회원탈퇴                                |
+| /user/destroy | POST   | isDelete => 0                           |
 
 ---
 
@@ -32,7 +32,7 @@
 | /board/deletePost | DELETE | 게시글 삭제     |
 | /board/updatePost | UPDATE | 게시글 수정     |
 | /board/readPost   | GET    | 게시글 가져오기 |
-
+|/board/detailPost|GET|게시글 상세정보|
 ---
 
 <br />
