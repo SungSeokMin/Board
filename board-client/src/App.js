@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Nav from './components/Nav';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import SignIn from './pages/user/SignIn';
 import SignUp from './pages/user/SignUp';
 import MyPage from './pages/user/MyPage';
@@ -12,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLogin: true,
+      isLogin: false,
       boardList: null,
     };
   }
@@ -31,24 +31,27 @@ class App extends Component {
       'Content-Type': 'application/json',
       withCredentials: true,
     });
-    this.setState({ isLogin: false });
-    return <Redirect to="/" />;
+    this.setState({
+      isLogin: false,
+    });
+    this.props.history.push('/');
   };
   render() {
     return (
       <div className="Wrapper">
         <Nav isLogin={this.state.isLogin} handleLogout={this.handleLogout} />
         <Switch>
-          <Route path="/mypage" render={() => <MyPage />} />
           <Route path="/signin" render={() => <SignIn />} />
           <Route path="/signup" render={() => <SignUp />} />
+          <Route path="/mypage" render={() => <MyPage />} />
         </Switch>
         <Switch>
-          <Route path="/" render={() => <Post />} />
+          <Route exact path="/" render={() => <Post />} />
           <Route path="detailpost" render={() => <DetailPost />} />
         </Switch>
+        {/*// ! signup/ mypage/ signin 에서는 게시글을 보여줄 필요가 없음  } withRouter */}
       </div>
     );
   }
 }
-export default App;
+export default withRouter(App);
