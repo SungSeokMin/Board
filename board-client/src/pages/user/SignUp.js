@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 class SignUp extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class SignUp extends Component {
       email: '',
       password: '',
       userName: '',
+      emailCheck: '',
       errorMessage: '',
     };
   }
@@ -17,11 +19,53 @@ class SignUp extends Component {
   };
   // ? InputValueChange
   handleInputValue = (key) => (e) => {
+    if (key === 'email') {
+      if (this.vaildateEmail(e.target.value)) {
+        this.setState({ emailCheck: '유요한 이메일 입니다.' });
+      } else {
+        this.setState({ emailCheck: '유요하지 않은 이메일 입니다.' });
+      }
+    }
     this.setState({ [key]: e.target.value });
   };
 
   // ? SingUp Button Click
-  handleSignUp = () => {};
+  handleSignUp = async () => {
+    // TODO : Post/ signup
+    // email, password, userName을 보낸다.
+    let inputData = {
+      email: this.state.email,
+      password: this.state.password,
+      userName: this.state.userName,
+      emailcheck: this.state.emailCheck,
+    };
+
+    try {
+      for (let [key, value] of Object.entries(inputData)) {
+        if (key === 'emailCheck') {
+          if ((value = '유요한 이메일 입니다.')) {
+            return;
+          }
+        } else if (value === '') {
+          return this.setState({
+            errorMessage: `${key} 항목이 입력되지 않았습니다.`,
+          });
+        }
+      }
+
+      const postSignUp = await axios.post(
+        'https://localhost:4000/user/signup',
+        inputData
+      );
+      if (postSignUp) {
+        alert('회원가입이 완료 되었습니다.');
+        this.props.history.push('/');
+      }
+    } catch (err) {
+      this.setState({ emailCheck: '중복된 이메일 입니다.' });
+      console.log(err);
+    }
+  };
   render() {
     return (
       <div>
@@ -33,12 +77,22 @@ class SignUp extends Component {
               onChange={this.handleInputValue('email')}
               placeholder="email"
             />
+            <div>{this.state.emailCheck}</div>
             <input
               type="password"
               onChange={this.handleInputValue('password')}
               placeholder="password"
             />
+            <input
+              type="text"
+              onChange={this.handleInputValue('userName')}
+              placeholder="userName"
+            />
+            <button type="submit" onClick={this.handleSignUp}>
+              회원가입
+            </button>
           </form>
+          <div className="errMsg">{this.state.errorMessage}</div>
         </center>
       </div>
     );

@@ -26,6 +26,11 @@ class App extends Component {
       .then((res) => this.setState({ boardList: res.data.data }))
       .catch((err) => alert(err));
   }
+
+  handleLoginCheck = (loginId) => {
+    this.setState({ isLogin: true, loginId });
+  };
+
   handleLogout = async () => {
     await axios.post('https://localhost:4000/user/signout', null, {
       'Content-Type': 'application/json',
@@ -41,7 +46,10 @@ class App extends Component {
       <div className="Wrapper">
         <Nav isLogin={this.state.isLogin} handleLogout={this.handleLogout} />
         <Switch>
-          <Route path="/signin" render={() => <SignIn />} />
+          <Route
+            path="/signin"
+            render={() => <SignIn handleLoginCheck={this.handleLoginCheck} />}
+          />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/mypage" render={() => <MyPage />} />
         </Switch>
