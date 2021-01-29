@@ -5,8 +5,9 @@ class Nav extends Component {
   render() {
     return (
       <div className="Nav">
-        <img src={logo} alt="logo" />
-        <p className="title">게시판</p>
+        <Link to="/">
+          <img src={logo} alt="logo" />
+        </Link>
         {this.props.isLogin ? (
           <div className="btn-box">
             <Link className="link-btn" to="/mypage">
@@ -21,7 +22,7 @@ class Nav extends Component {
           </div>
         ) : (
           <div className="btn-box">
-            <Link className="link-btn" to="/signin">
+            <Link to="/signin" className="link-btn">
               Sign In
             </Link>
             <Link className="link-btn" to="/signup">
