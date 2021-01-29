@@ -37,9 +37,7 @@ module.exports = {
     });
 
     res.status(200).json({
-      data: {
-        board: boardInfo,
-      },
+      data: boardInfo,
     });
   },
 

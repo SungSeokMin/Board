@@ -58,6 +58,7 @@ module.exports = {
 
   signout: (req, res) => {
     // TODO : logout
+    console.log('check sign out');
     req.session.destroy();
     res.status(205).json({ message: 'logout success!!' });
   },
