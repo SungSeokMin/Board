@@ -78,6 +78,7 @@ module.exports = {
         const boardInfo = await board.findAll({
           where: {
             userId: req.session.userId,
+            isDelete: 1,
           },
         });
         res.status(200).json({

@@ -68,32 +68,39 @@ class SignUp extends Component {
   };
   render() {
     return (
-      <div>
-        <center>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <h1>Sign Up</h1>
+      <div className="signIn">
+        <form onSubmit={(e) => e.preventDefault()}>
+          <h1>Sign Up</h1>
+          <div className="txt_filed">
             <input
               type="email"
               onChange={this.handleInputValue('email')}
               placeholder="email"
+              required
             />
-            <div>{this.state.emailCheck}</div>
+          </div>
+          <div>{this.state.emailCheck}</div>
+          <div className="txt_filed">
             <input
               type="password"
               onChange={this.handleInputValue('password')}
               placeholder="password"
+              required
             />
+          </div>
+          <div className="txt_filed">
             <input
               type="text"
               onChange={this.handleInputValue('userName')}
               placeholder="userName"
+              required
             />
-            <button type="submit" onClick={this.handleSignUp}>
-              회원가입
-            </button>
-          </form>
-          <div className="errMsg">{this.state.errorMessage}</div>
-        </center>
+          </div>
+          <button type="submit" onClick={this.handleSignUp}>
+            회원가입
+          </button>
+        </form>
+        <div className="errMsg">{this.state.errorMessage}</div>
       </div>
     );
   }

@@ -51,25 +51,30 @@ class SignIn extends Component {
   };
   render() {
     return (
-      <div>
-        <center>
-          <form onSubmit={(e) => e.preventDefault()}>
+      <div className="signUp">
+        <form onSubmit={(e) => e.preventDefault()}>
+          <h1>Sign In</h1>
+          <div className="txt_filed">
             <input
               type="email"
               onChange={this.handleInputValue('email')}
               placeholder="email"
+              required
             />
+          </div>
+          <div className="txt_filed">
             <input
               type="password"
               onChange={this.handleInputValue('password')}
               placeholder="password"
+              required
             />
-            <button type="submit" onClick={this.handleLogin}>
-              로그인
-            </button>
-          </form>
-          <div>{this.state.errMessage}</div>
-        </center>
+          </div>
+          <button type="submit" onClick={this.handleLogin}>
+            로그인
+          </button>
+        </form>
+        <div className="errMsg">{this.state.errMessage}</div>
       </div>
     );
   }

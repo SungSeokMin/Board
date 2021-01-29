@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 class MyPage extends Component {
   state = {
     email: '',
@@ -30,24 +30,44 @@ class MyPage extends Component {
   render() {
     let list = this.state.writePost.map((el) => {
       return (
-        <div className="table" key={el.id}>
-          <p>{el.id}</p>
-          <p>{el.title}</p>
-          <p>{this.state.userName}</p>
-          <p>{el.createdAt.slice(0, 10)}</p>
-          <p>{el.hitCount}</p>
-          <p>{el.likeCount}</p>
-        </div>
+        <tr key={el.id}>
+          <td>{el.id}</td>
+          <td>
+            <Link
+              to="/detailpost"
+              className="postTitle"
+              onClick={() => this.props.handlePostNumber(el.id)}
+            >
+              {el.title}
+            </Link>
+          </td>
+          <td>{this.state.userName}</td>
+          <td>{el.createdAt.slice(0, 10)}</td>
+          <td>{el.hitCount}</td>
+          <td>{el.likeCount}</td>
+        </tr>
       );
     });
     return (
       <div>
-        <div>
+        <div className="userInfo">
           <div className="email">{this.state.email}</div>
           <div className="userName">{this.state.userName}</div>
           <div className="createdAt">{this.state.createdAt.slice(0, 10)}</div>
         </div>
-        {list}
+        <table>
+          <thead>
+            <tr>
+              <th>글 번호</th>
+              <th>제 목</th>
+              <th>작성자</th>
+              <th>작성일자</th>
+              <th>조회수</th>
+              <th>좋아요</th>
+            </tr>
+          </thead>
+          <tbody className="tableBody">{list}</tbody>
+        </table>
       </div>
     );
   }

@@ -13,7 +13,8 @@ class App extends Component {
     super(props);
     this.state = {
       isLogin: false,
-      boardList: null,
+      boardList: [],
+      id: 0,
     };
   }
 
@@ -41,6 +42,11 @@ class App extends Component {
     });
     this.props.history.push('/');
   };
+
+  handlePostNumber = (id) => {
+    this.setState({ id });
+  };
+
   render() {
     return (
       <div className="Wrapper">
@@ -51,11 +57,17 @@ class App extends Component {
             render={() => <SignIn handleLoginCheck={this.handleLoginCheck} />}
           />
           <Route path="/signup" render={() => <SignUp />} />
-          <Route path="/mypage" render={() => <MyPage />} />
+          <Route
+            path="/mypage"
+            render={() => <MyPage handlePostNumber={this.handlePostNumber} />}
+          />
         </Switch>
         <Switch>
           <Route exact path="/" render={() => <Post />} />
-          <Route path="detailpost" render={() => <DetailPost />} />
+          <Route
+            path="/detailpost"
+            render={() => <DetailPost id={this.state.id} />}
+          />
         </Switch>
         {/*// ! signup/ mypage/ signin 에서는 게시글을 보여줄 필요가 없음  } withRouter */}
       </div>
