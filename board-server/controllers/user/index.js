@@ -19,8 +19,8 @@ module.exports = {
       } else {
         req.session.userId = response.id;
         res.status(200).json({
-          data: response,
-          message: 'Ok',
+          data: response.id,
+          message: 'ok',
         });
       }
     } catch (err) {
@@ -81,10 +81,8 @@ module.exports = {
           },
         });
         res.status(200).json({
-          data: {
-            user: userInfo,
-            board: boardInfo,
-          },
+          userInfo,
+          boardInfo,
           message: 'OK',
         });
       }
