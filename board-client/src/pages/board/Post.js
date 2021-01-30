@@ -6,28 +6,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import axios from 'axios';
 
 class Post extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      boardList: [],
-    };
-  }
-  async componentDidMount() {
-    const getInfo = await axios.get('https://localhost:4000/board/readPost', {
-      withCredentials: true,
-    });
-    const allPostList = getInfo.data.data;
-    this.setState({
-      boardList: allPostList,
-    });
-  }
-
   render() {
-    const lists = this.state.boardList.map((list) => {
+    const lists = this.props.boardList.map((list) => {
       return (
         <TableRow key={list.id}>
           <TableCell>{list.id}</TableCell>

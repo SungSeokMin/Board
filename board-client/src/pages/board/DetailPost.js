@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 class DetailPost extends Component {
   state = {
+    id: '',
+    userId: '',
     title: '',
     content: '',
     userName: '',
@@ -12,6 +14,7 @@ class DetailPost extends Component {
     createdAt: '',
   };
   componentDidMount() {
+    // 해당 게시물에 대한 id
     axios
       .post(
         'https://localhost:4000/board/detailPost',
@@ -19,8 +22,9 @@ class DetailPost extends Component {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         const {
+          id,
+          userId,
           title,
           content,
           user,
@@ -29,6 +33,8 @@ class DetailPost extends Component {
           createdAt,
         } = res.data.data;
         this.setState({
+          id,
+          userId,
           title,
           content,
           userName: user.userName,
@@ -39,29 +45,12 @@ class DetailPost extends Component {
       });
   }
 
-  handleDeletePost = async () => {
-    try {
-      const deletePost = await axios.post(
-        'https://localhost:4000/board/deletePost',
-        {
-          id: this.props.id,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      if (deletePost.status === 200) {
-        console.log('hi');
-        this.props.history.push('/');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   render() {
-    console.log(this.props.id);
+    // TODO isLogin이 true이고 해당 게시물의 id와 로그인 한 id가 일치할 경우 삭제버튼을 보여준다.
+    // props의 id와 state의 id가 같으면
     const {
+      id,
+      userId,
       title,
       content,
       userName,
@@ -82,7 +71,9 @@ class DetailPost extends Component {
         <div className="detail_content">
           <p>{content}</p>
         </div>
-        <button onClick={this.handleDeletePost}>삭제</button>
+        {userId === this.props.sessionId && (
+          <button onClick={() => this.props.handleDeletePost(id)}>삭제</button>
+        )}
       </div>
     );
   }

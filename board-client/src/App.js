@@ -14,7 +14,10 @@ class App extends Component {
     this.state = {
       isLogin: false,
       boardList: [],
-      id: 0,
+      // 로그인 할 때의 session 값
+      session: null,
+      // 해당 게시물에 대한 id 값
+      id: null,
     };
   }
 
@@ -28,8 +31,8 @@ class App extends Component {
       .catch((err) => alert(err));
   }
 
-  handleLoginCheck = (loginId) => {
-    this.setState({ isLogin: true, loginId });
+  handleLoginCheck = (session) => {
+    this.setState({ isLogin: true, session });
   };
 
   handleLogout = async () => {
@@ -37,14 +40,45 @@ class App extends Component {
       'Content-Type': 'application/json',
       withCredentials: true,
     });
+
     this.setState({
       isLogin: false,
+      session: null,
     });
     this.props.history.push('/');
   };
 
   handlePostNumber = (id) => {
     this.setState({ id });
+  };
+
+  handleDeletePost = async (id) => {
+    try {
+      await axios.post(
+        'https://localhost:4000/board/deletePost',
+        {
+          id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      // 게시글을 삭제 한 후 setState가 한번 발생 후 render가 된 상태로 홈페이지로 가야한다.
+      const readPost = await axios.get(
+        'https://localhost:4000/board/readPost',
+        {
+          withCredentials: true,
+          'Content-Type': 'application/json',
+        }
+      );
+      this.setState({
+        ...this.state,
+        boardList: [...readPost.data.data],
+      });
+      this.props.history.push('/');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   render() {
@@ -75,7 +109,13 @@ class App extends Component {
           />
           <Route
             path="/detailpost"
-            render={() => <DetailPost id={this.state.id} />}
+            render={() => (
+              <DetailPost
+                handleDeletePost={this.handleDeletePost}
+                sessionId={this.state.session}
+                id={this.state.id}
+              />
+            )}
           />
         </Switch>
         {/*// ! signup/ mypage/ signin 에서는 게시글을 보여줄 필요가 없음  } withRouter */}
