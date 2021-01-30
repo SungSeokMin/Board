@@ -75,7 +75,7 @@ class App extends Component {
         ...this.state,
         boardList: [...readPost.data.data],
       });
-      this.props.history.push('/');
+      this.props.history.go(-1);
     } catch (err) {
       console.log(err);
     }
