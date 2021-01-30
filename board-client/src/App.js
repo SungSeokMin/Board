@@ -63,7 +63,16 @@ class App extends Component {
           />
         </Switch>
         <Switch>
-          <Route exact path="/" render={() => <Post />} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <Post
+                boardList={this.state.boardList}
+                handlePostNumber={this.handlePostNumber}
+              />
+            )}
+          />
           <Route
             path="/detailpost"
             render={() => <DetailPost id={this.state.id} />}

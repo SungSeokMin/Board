@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+
 class MyPage extends Component {
-  state = {
-    email: '',
-    userName: '',
-    createdAt: '',
-    writePost: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      userName: '',
+      createdAt: '',
+      writePost: [],
+    };
+  }
 
   async componentDidMount() {
     // get 요청
@@ -30,9 +43,9 @@ class MyPage extends Component {
   render() {
     let list = this.state.writePost.map((el) => {
       return (
-        <tr key={el.id}>
-          <td>{el.id}</td>
-          <td>
+        <TableRow key={el.id}>
+          <TableCell>{el.id}</TableCell>
+          <TableCell>
             <Link
               to="/detailpost"
               className="postTitle"
@@ -40,12 +53,12 @@ class MyPage extends Component {
             >
               {el.title}
             </Link>
-          </td>
-          <td>{this.state.userName}</td>
-          <td>{el.createdAt.slice(0, 10)}</td>
-          <td>{el.hitCount}</td>
-          <td>{el.likeCount}</td>
-        </tr>
+          </TableCell>
+          <TableCell>{this.state.userName}</TableCell>
+          <TableCell>{el.createdAt.slice(0, 10)}</TableCell>
+          <TableCell>{el.hitCount}</TableCell>
+          <TableCell>{el.likeCount}</TableCell>
+        </TableRow>
       );
     });
     return (
@@ -55,19 +68,21 @@ class MyPage extends Component {
           <div className="userName">{this.state.userName}</div>
           <div className="createdAt">{this.state.createdAt.slice(0, 10)}</div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>글 번호</th>
-              <th>제 목</th>
-              <th>작성자</th>
-              <th>작성일자</th>
-              <th>조회수</th>
-              <th>좋아요</th>
-            </tr>
-          </thead>
-          <tbody className="tableBody">{list}</tbody>
-        </table>
+        <Paper>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell>글 번호</TableCell>
+                <TableCell>제 목</TableCell>
+                <TableCell>작성자</TableCell>
+                <TableCell>작성일자</TableCell>
+                <TableCell>조회수</TableCell>
+                <TableCell>좋아요</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody className="tableBody">{list}</TableBody>
+          </Table>
+        </Paper>
       </div>
     );
   }
