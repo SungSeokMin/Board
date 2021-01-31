@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 class DetailPost extends Component {
   state = {
@@ -23,7 +23,6 @@ class DetailPost extends Component {
       )
       .then((res) => {
         const {
-          id,
           userId,
           title,
           content,
@@ -33,7 +32,6 @@ class DetailPost extends Component {
           createdAt,
         } = res.data.data;
         this.setState({
-          id,
           userId,
           title,
           content,
@@ -49,7 +47,6 @@ class DetailPost extends Component {
     // TODO isLogin이 true이고 해당 게시물의 id와 로그인 한 id가 일치할 경우 삭제버튼을 보여준다.
     // props의 id와 state의 id가 같으면
     const {
-      id,
       userId,
       title,
       content,
@@ -72,7 +69,17 @@ class DetailPost extends Component {
           <p>{content}</p>
         </div>
         {userId === this.props.sessionId && (
-          <button onClick={() => this.props.handleDeletePost(id)}>삭제</button>
+          <>
+            <button onClick={() => this.props.handleDeletePost(this.props.id)}>
+              삭제
+            </button>
+            <Link
+              to="/updatepost"
+              onClick={() => this.props.handleUpdateTitle(title, content)}
+            >
+              수정
+            </Link>
+          </>
         )}
       </div>
     );

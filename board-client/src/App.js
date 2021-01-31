@@ -6,8 +6,11 @@ import SignIn from './pages/user/SignIn';
 import SignUp from './pages/user/SignUp';
 import MyPage from './pages/user/MyPage';
 import Post from './pages/board/Post';
+import AddPost from './pages/board/addPost';
 import DetailPost from './pages/board/DetailPost';
 import './App.css';
+import UpdatePost from './pages/board/UpdatePost';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +21,8 @@ class App extends Component {
       session: null,
       // 해당 게시물에 대한 id 값
       id: null,
+      title: '',
+      content: '',
     };
   }
 
@@ -52,6 +57,23 @@ class App extends Component {
     this.setState({ id });
   };
 
+  async componentDidUpdate() {
+    try {
+      const readPost = await axios.get(
+        'https://localhost:4000/board/readPost',
+        {
+          withCredentials: true,
+        }
+      );
+      this.setState({
+        ...this.state,
+        boardList: [...readPost.data.data],
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   handleDeletePost = async (id) => {
     try {
       await axios.post(
@@ -64,17 +86,46 @@ class App extends Component {
         }
       );
       // 게시글을 삭제 한 후 setState가 한번 발생 후 render가 된 상태로 홈페이지로 가야한다.
-      const readPost = await axios.get(
-        'https://localhost:4000/board/readPost',
+      this.props.history.go(-1);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  handleUpdateTitle = async (title, content) => {
+    this.setState({ title, content });
+  };
+
+  handleAddPost = async (title, content) => {
+    try {
+      await axios.post(
+        'https://localhost:4000/board/addPost',
+        {
+          title,
+          content,
+        },
         {
           withCredentials: true,
-          'Content-Type': 'application/json',
         }
       );
-      this.setState({
-        ...this.state,
-        boardList: [...readPost.data.data],
-      });
+      this.props.history.go(-1);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  handleUpdatePost = async (title, content) => {
+    try {
+      await axios.post(
+        'https://localhost:4000/board/updatePost',
+        {
+          title,
+          content,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       this.props.history.go(-1);
     } catch (err) {
       console.log(err);
@@ -111,9 +162,24 @@ class App extends Component {
             path="/detailpost"
             render={() => (
               <DetailPost
+                handleUpdateTitle={this.handleUpdateTitle}
                 handleDeletePost={this.handleDeletePost}
                 sessionId={this.state.session}
                 id={this.state.id}
+              />
+            )}
+          />
+          <Route
+            path="/addpost"
+            render={() => <AddPost handleAddPost={this.handleAddPost} />}
+          />
+          <Route
+            path="/updatepost"
+            render={() => (
+              <UpdatePost
+                handleUpdatePost={this.handleUpdatePost}
+                title={this.state.title}
+                content={this.state.content}
               />
             )}
           />
